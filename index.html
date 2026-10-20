@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Find Your People: campus friends, clubs and mentors</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=Figtree:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f2f6fb;--ink:#14213d;--muted:#5b6785;--card:#fff;--line:#d9e1ee;--teal:#0e7c7b;--teal-soft:#d6efee;--sun:#f2b134;--sun-soft:#fdf0d2}
+@media (prefers-color-scheme:dark){:root{--bg:#0f1729;--ink:#eef2fb;--muted:#9aa7c4;--card:#18223b;--line:#2b3858;--teal:#4fd1c5;--teal-soft:#16403f;--sun:#f2b134;--sun-soft:#3d3217}}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 1rem/1.55 Figtree,system-ui,sans-serif}
+h1,h2,h3{font-family:'Bricolage Grotesque',Figtree,sans-serif;line-height:1.1;margin:0}
+.wrap{max-width:960px;margin:0 auto;padding:0 20px}
+header{padding:48px 0 24px}
+h1{font-size:clamp(2.4rem,7vw,4.2rem);font-weight:800;letter-spacing:-.02em;max-width:14ch}
+header p{max-width:52ch;color:var(--muted);font-size:1.1rem;margin:16px 0 0}
+.picker{background:var(--card);border:2px solid var(--ink);border-radius:20px;padding:24px;margin:8px 0 32px;box-shadow:6px 6px 0 var(--sun)}
+.picker h2{font-size:1.5rem;margin-bottom:4px}
+.picker p{margin:0 0 16px;color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font:inherit;border:1.5px solid var(--line);background:transparent;color:var(--ink);border-radius:999px;padding:7px 14px;cursor:pointer;transition:background .15s,border-color .15s}
+.chip:hover{border-color:var(--teal)}
+.chip[aria-pressed=true]{background:var(--teal);border-color:var(--teal);color:#fff}
+@media (prefers-color-scheme:dark){.chip[aria-pressed=true]{color:#0f1729}}
+.tabs{display:flex;gap:4px;border-bottom:2px solid var(--line);margin-bottom:20px;overflow-x:auto}
+.tab{font:600 1rem Figtree,sans-serif;background:none;border:0;color:var(--muted);padding:12px 16px;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;white-space:nowrap}
+.tab[aria-selected=true]{color:var(--ink);border-bottom-color:var(--teal)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:10px}
+.card h3{font-size:1.15rem}
+.meta{color:var(--muted);font-size:.9rem;margin:0}
+.bio{margin:0;font-size:.95rem}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+.tag{font-size:.8rem;padding:2px 10px;border-radius:999px;background:var(--bg);color:var(--muted)}
+.tag.match{background:var(--teal-soft);color:var(--teal);font-weight:600}
+.score{font-size:.85rem;font-weight:600;color:var(--teal)}
+.score.zero{color:var(--muted);font-weight:400}
+.act{margin-top:auto;font:600 .95rem Figtree,sans-serif;border:2px solid var(--ink);background:var(--ink);color:var(--bg);border-radius:10px;padding:9px 14px;cursor:pointer}
+.act[aria-pressed=true]{background:transparent;color:var(--ink)}
+.act:hover{opacity:.88}
+:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+.circle{background:var(--sun-soft);border-radius:14px;padding:16px 20px;margin:32px 0;display:flex;flex-wrap:wrap;gap:8px 24px;align-items:center}
+.circle strong{font-family:'Bricolage Grotesque',sans-serif;font-size:1.2rem}
+.circle ul{margin:0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:6px}
+.circle li{background:var(--card);border-radius:999px;padding:3px 12px;font-size:.9rem}
+.empty{grid-column:1/-1;color:var(--muted);padding:24px 0}
+footer{padding:16px 0 48px;color:var(--muted);font-size:.85rem}
+.reset{background:none;border:0;color:var(--muted);text-decoration:underline;cursor:pointer;font:inherit;padding:0}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Find your people on campus.</h1>
+    <p>Pick what you enjoy. We'll show you students who share it, clubs that fit, and mentors who've been where you are.</p>
+  </header>
+
+  <section class="picker" aria-labelledby="pick-h">
+    <h2 id="pick-h">What are you into?</h2>
+    <p>Choose as many as you like. Your matches update as you tap.</p>
+    <div class="chips" id="interests" role="group" aria-label="Your interests"></div>
+  </section>
+
+  <div class="tabs" role="tablist" aria-label="Browse">
+    <button class="tab" role="tab" id="t-people" aria-selected="true" data-tab="people">Students like you</button>
+    <button class="tab" role="tab" id="t-clubs" aria-selected="false" data-tab="clubs">Clubs</button>
+    <button class="tab" role="tab" id="t-mentors" aria-selected="false" data-tab="mentors">Mentors</button>
+  </div>
+  <main class="grid" id="results" role="tabpanel" aria-live="polite"></main>
+
+  <aside class="circle" aria-label="Your circle">
+    <strong>Your circle</strong>
+    <ul id="circle"></ul>
+  </aside>
+
+  <footer>Your choices are saved only in this browser. <button class="reset" id="reset">Clear my data</button></footer>
+</div>
+
+<script>
+const INTERESTS=["Coding","Music","Football","Hiking","Photography","Debate","Gaming","Art","Entrepreneurship","Volunteering","Film","Dance","Reading","Chess","Cooking","Fitness"];
+const PEOPLE=[
+ {id:"p1",name:"Thandi M.",sub:"Year 1, Computer Science",bio:"New here and looking for a study group and someone to play chess with.",tags:["Coding","Chess","Reading"]},
+ {id:"p2",name:"Kabo S.",sub:"Year 2, Business",bio:"Run a small thrift side hustle. Always up for a hike on Saturdays.",tags:["Entrepreneurship","Hiking","Fitness"]},
+ {id:"p3",name:"Neo T.",sub:"Year 1, Engineering",bio:"Guitar in the dorm, football on weekends.",tags:["Music","Football","Gaming"]},
+ {id:"p4",name:"Lesedi R.",sub:"Year 3, Media Studies",bio:"Making a short film this term and need people to help.",tags:["Film","Photography","Art"]},
+ {id:"p5",name:"Amara O.",sub:"Year 1, Law",bio:"Debate nerd who also loves to cook for friends.",tags:["Debate","Cooking","Volunteering"]},
+ {id:"p6",name:"Tumelo B.",sub:"Year 2, Design",bio:"Dance crew member. Come learn something new with us.",tags:["Dance","Music","Art"]},
+ {id:"p7",name:"Mpho K.",sub:"Year 2, Information Systems",bio:"Hackathon fan, part-time gamer, full-time coffee drinker.",tags:["Coding","Gaming","Entrepreneurship"]},
+ {id:"p8",name:"Ora L.",sub:"Year 1, Education",bio:"Weekend volunteer and bookworm looking for a book club.",tags:["Volunteering","Reading","Fitness"]}];
+const CLUBS=[
+ {id:"c1",name:"Code & Coffee",sub:"Meets Wednesdays, 5pm, Library Room 2",bio:"Build small projects together. Beginners very welcome.",tags:["Coding","Entrepreneurship"]},
+ {id:"c2",name:"Trailblazers Hiking Club",sub:"Meets Saturdays, 7am, Main Gate",bio:"Day hikes and campus clean-ups for all fitness levels.",tags:["Hiking","Fitness","Volunteering"]},
+ {id:"c3",name:"Open Mic Society",sub:"Meets Fridays, 6pm, Student Centre",bio:"Music, poetry and comedy. Perform or just cheer.",tags:["Music","Dance","Art"]},
+ {id:"c4",name:"Debate Union",sub:"Meets Tuesdays, 4pm, Hall B",bio:"Weekly practice rounds and inter-campus tournaments.",tags:["Debate","Reading"]},
+ {id:"c5",name:"Lens & Frames",sub:"Meets Thursdays, 3pm, Media Lab",bio:"Photo walks and film nights. Borrow a camera.",tags:["Photography","Film","Art"]},
+ {id:"c6",name:"Campus FC",sub:"Trains Mon and Thu, 5pm, Main Field",bio:"Social football, mixed levels, no trials.",tags:["Football","Fitness"]},
+ {id:"c7",name:"Game Night Guild",sub:"Meets Fridays, 7pm, Common Room",bio:"Board games, chess and video games with snacks.",tags:["Gaming","Chess"]},
+ {id:"c8",name:"Community Kitchen",sub:"Meets Sundays, 11am, Residence Hall",bio:"Cook meals for local shelters and make friends.",tags:["Cooking","Volunteering"]}];
+const MENTORS=[
+ {id:"m1",name:"Dr. Keabetswe P.",sub:"Lecturer, Computer Science",bio:"Happy to talk about first-year courses, internships and imposter syndrome.",tags:["Coding","Chess","Entrepreneurship"]},
+ {id:"m2",name:"Boitumelo N.",sub:"Final year, Business (peer mentor)",bio:"Can share how I found my feet in my first semester.",tags:["Entrepreneurship","Volunteering","Fitness"]},
+ {id:"m3",name:"Prof. Kgosi A.",sub:"Media Studies",bio:"Helps students turn creative hobbies into portfolios.",tags:["Film","Photography","Art","Music"]},
+ {id:"m4",name:"Naledi D.",sub:"Alumna, Law (now at a firm)",bio:"Advice on debate, moots and choosing electives.",tags:["Debate","Reading","Volunteering"]},
+ {id:"m5",name:"Tebogo W.",sub:"Student Affairs",bio:"Knows every club, grant and support service on campus.",tags:["Hiking","Cooking","Dance","Football"]}];
+const ACTIONS={people:["Say hi","Hi sent"],clubs:["Join club","Joined"],mentors:["Request intro","Requested"]};
+const KEY="fyp-v1";
+let state={interests:[],joined:[]},tab="people";
+try{const s=JSON.parse(localStorage.getItem(KEY));if(s&&s.interests&&s.joined)state=s}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){}};
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+function renderChips(){
+ $("interests").innerHTML=INTERESTS.map(i=>`<button class="chip" aria-pressed="${state.interests.includes(i)}" data-i="${esc(i)}">${esc(i)}</button>`).join("");
+}
+function renderResults(){
+ const data={people:PEOPLE,clubs:CLUBS,mentors:MENTORS}[tab];
+ const [off,on]=ACTIONS[tab];
+ const rows=data.map(d=>({...d,n:d.tags.filter(t=>state.interests.includes(t)).length}))
+  .sort((a,b)=>b.n-a.n);
+ const picked=state.interests.length>0;
+ $("results").innerHTML=rows.map(d=>{
+  const done=state.joined.includes(d.id);
+  const label=!picked?"Pick interests to see matches":d.n?`${d.n} shared interest${d.n>1?"s":""}`:"No overlap yet";
+  return `<article class="card"><h3>${esc(d.name)}</h3><p class="meta">${esc(d.sub)}</p>
+  <p class="bio">${esc(d.bio)}</p>
+  <div class="tags">${d.tags.map(t=>`<span class="tag${state.interests.includes(t)?" match":""}">${esc(t)}</span>`).join("")}</div>
+  <span class="score${d.n?"":" zero"}">${label}</span>
+  <button class="act" aria-pressed="${done}" data-id="${d.id}">${done?on:off}</button></article>`;
+ }).join("");
+}
+function renderCircle(){
+ const all=[...PEOPLE,...CLUBS,...MENTORS];
+ const items=state.joined.map(id=>all.find(x=>x.id===id)).filter(Boolean);
+ $("circle").innerHTML=items.length?items.map(x=>`<li>${esc(x.name)}</li>`).join(""):`<li>Nobody yet. Say hi to someone or join a club.</li>`;
+}
+function renderAll(){renderChips();renderResults();renderCircle()}
+
+$("interests").addEventListener("click",e=>{
+ const b=e.target.closest("[data-i]");if(!b)return;
+ const i=b.dataset.i,k=state.interests.indexOf(i);
+ k<0?state.interests.push(i):state.interests.splice(k,1);
+ save();renderChips();renderResults();
+ $("interests").querySelector(`[data-i="${CSS.escape(i)}"]`).focus();
+});
+$("results").addEventListener("click",e=>{
+ const b=e.target.closest("[data-id]");if(!b)return;
+ const id=b.dataset.id,k=state.joined.indexOf(id);
+ k<0?state.joined.push(id):state.joined.splice(k,1);
+ save();renderResults();renderCircle();
+ $("results").querySelector(`[data-id="${id}"]`).focus();
+});
+document.querySelector(".tabs").addEventListener("click",e=>{
+ const b=e.target.closest("[data-tab]");if(!b)return;
+ tab=b.dataset.tab;
+ document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected",t===b));
+ renderResults();
+});
+$("reset").addEventListener("click",()=>{state={interests:[],joined:[]};save();renderAll()});
+renderAll();
+</script>
+</body>
+</html>
