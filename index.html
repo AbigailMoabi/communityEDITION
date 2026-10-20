@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Find Your People: campus friends, clubs and mentors</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=Figtree:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<nav class="navbar" aria-label="Main">
+  <div class="wrap">
+    <a class="logo" href="index.html">Find Your <span>People</span></a>
+    <ul class="nav-links">
+      <li><a class="nav-link active" href="index.html">Home</a></li>
+      <li><a class="nav-link" href="about.html">About</a></li>
+      <li><a class="nav-link" href="contact.html">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+<main class="page">
+<div class="wrap">
+  <header class="hero">
+    <h1>Find your people on campus.</h1>
+    <p>Pick what you enjoy. We'll show you students who share it, clubs that fit, and mentors who've been where you are.</p>
+  </header>
+
+  <section class="picker" aria-labelledby="pick-h">
+    <h2 id="pick-h">What are you into?</h2>
+    <p>Choose as many as you like. Your matches update as you tap.</p>
+    <div class="chips" id="interests" role="group" aria-label="Your interests"></div>
+  </section>
+
+  <div class="tabs" role="tablist" aria-label="Browse">
+    <button class="tab" role="tab" id="t-people" aria-selected="true" data-tab="people">Students like you</button>
+    <button class="tab" role="tab" id="t-clubs" aria-selected="false" data-tab="clubs">Clubs</button>
+    <button class="tab" role="tab" id="t-mentors" aria-selected="false" data-tab="mentors">Mentors</button>
+  </div>
+  <div class="grid" id="results" role="tabpanel" aria-live="polite"></div>
+
+  <aside class="circle" aria-label="Your circle">
+    <strong>Your circle</strong>
+    <ul id="circle"></ul>
+  </aside>
+</div>
+</main>
+<footer>
+  <div class="wrap">
+    <div class="footer-row">
+      <div class="footer-col">
+        <h4>Find Your People</h4>
+        <p>Turning strangers into a community, one shared interest at a time.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Pages</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Privacy</h4>
+        <p>Your choices are saved only in this browser. <button class="reset" id="reset">Clear my data</button></p>
+      </div>
+    </div>
+    <p class="copyright-text">&copy; 2026 Find Your People. Made by students, for students.</p>
+  </div>
+</footer>
+<script src="app.js"></script>
+</body>
+</html>
