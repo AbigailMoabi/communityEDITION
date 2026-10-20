@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sign up: Find Your People</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Ccircle cx='18' cy='24' r='14' fill='%230e7c7b'/%3E%3Ccircle cx='30' cy='24' r='14' fill='%23f2b134' fill-opacity='.92'/%3E%3Ccircle cx='24' cy='19' r='3.2' fill='%2314213d'/%3E%3Cpath d='M17.5 31a6.5 6.5 0 0 1 13 0z' fill='%2314213d'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=Figtree:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<nav class="navbar" aria-label="Main">
+  <div class="wrap">
+    <a class="logo" href="index.html"><svg class="logo-mark" viewBox="0 0 48 48" width="40" height="40" role="img" aria-label="Find Your People logo">
+        <circle cx="18" cy="24" r="14" fill="#0e7c7b"/>
+        <circle cx="30" cy="24" r="14" fill="#f2b134" fill-opacity=".92"/>
+        <circle cx="24" cy="19" r="3.2" fill="#14213d"/>
+        <path d="M17.5 31a6.5 6.5 0 0 1 13 0z" fill="#14213d"/>
+      </svg><span class="logo-text">Find Your <span>People</span></span></a>
+    <ul class="nav-links">
+      <li><a class="nav-link" href="home.html">Find people</a></li>
+      <li><a class="nav-link" href="about.html">About</a></li>
+      <li><a class="nav-link" href="contact.html">Contact</a></li>
+      <li class="when-out"><a class="nav-link" href="login.html">Log in</a></li>
+      <li class="when-out"><a class="nav-link nav-cta active" href="signup.html">Sign up</a></li>
+      <li class="when-in"><span class="nav-hello" id="hello"></span></li>
+      <li class="when-in"><button class="nav-link nav-btn" id="logout" type="button">Log out</button></li>
+      <li><button class="theme-btn" id="themeBtn" type="button" aria-label="Switch theme"><span id="themeIcon" aria-hidden="true">&#9790;</span> <span id="themeText">Dark</span></button></li>
+    </ul>
+  </div>
+</nav>
+<main class="page">
+<div class="wrap">
+  <header class="page-title">
+    <h1>Sign up</h1>
+    <p>Create an account so your interests and circle are saved on this device.</p>
+  </header>
+  <form class="form-card" id="signupForm" novalidate>
+    <label for="su-name">Your name</label>
+    <input type="text" id="su-name" autocomplete="name" required>
+    <label for="su-email">Email</label>
+    <input type="email" id="su-email" autocomplete="email" required>
+    <label for="su-pass">Password (at least 6 characters)</label>
+    <input type="password" id="su-pass" autocomplete="new-password" required>
+    <label for="su-pass2">Confirm password</label>
+    <input type="password" id="su-pass2" autocomplete="new-password" required>
+    <p class="form-msg" id="signupMsg" role="alert"></p>
+    <button class="btn" type="submit">Create account</button>
+    <p class="form-alt">Already have an account? <a href="login.html">Log in</a></p>
+  </form>
+</div>
+</main>
+<footer>
+  <div class="wrap">
+    <div class="footer-row">
+      <div class="footer-col">
+        <h4>Find Your People</h4>
+        <a class="logo footer-logo" href="home.html"><svg class="logo-mark" viewBox="0 0 48 48" width="48" height="48" role="img" aria-label="Find Your People logo">
+        <circle cx="18" cy="24" r="14" fill="#0e7c7b"/>
+        <circle cx="30" cy="24" r="14" fill="#f2b134" fill-opacity=".92"/>
+        <circle cx="24" cy="19" r="3.2" fill="#14213d"/>
+        <path d="M17.5 31a6.5 6.5 0 0 1 13 0z" fill="#14213d"/>
+      </svg></a>
+        <p>Turning strangers into a community, one shared interest at a time.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Pages</h4>
+        <ul>
+          <li><a href="index.html">Welcome</a></li>
+          <li><a href="home.html">Find people</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li class="when-out"><a href="login.html">Log in</a></li>
+          <li class="when-out"><a href="signup.html">Sign up</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Privacy</h4>
+        <p>Your choices are saved only in this browser.</p>
+      </div>
+    </div>
+    <p class="copyright-text">&copy; 2026 Find Your People. Made by students, for students.</p>
+  </div>
+</footer>
+<script src="site.js"></script>
+</body>
+</html>
